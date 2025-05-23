@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -24,6 +25,8 @@ export default function Home() {
             Save and see your changes instantly.
           </li>
         </ol>
+
+        <Button>Click me (shadcn/ui)</Button>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a

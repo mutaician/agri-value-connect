@@ -37,10 +37,10 @@
         pnpm add react-leaflet leaflet
         pnpm add -D @types/leaflet
         ```
-*   [ ] **Initialize `shadcn/ui`:**
-    *   [ ] Follow the `shadcn/ui` installation guide for Next.js:
+*   [ ] **Initialize `shadcn`:**
+    *   [ ] Follow the `shadcn` installation guide for Next.js:
         ```bash
-        pnpm dlx shadcn-ui@latest init
+        pnpm dlx shadcn@latest init
         ```
     *   [ ] Configure `tailwind.config.js` and `globals.css` as per `shadcn/ui` instructions.
 *   [ ] **Environment Variables:**
