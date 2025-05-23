@@ -9,81 +9,81 @@
 
 **Phase 1: Project Setup & Initialization**
 
-*   [ ] **Git Setup:**
-    *   [ ] Initialize a new Git repository: `git init`
-    *   [ ] Create an initial commit with project files.
-    *   [ ] Create a repository on GitHub (or preferred platform) and push the initial commit.
-*   [ ] **Initialize Next.js Project:**
-    *   [ ] Open your terminal.
-    *   [ ] Run the Next.js create command:
+*   [x] **Git Setup:**
+    *   [x] Initialize a new Git repository: `git init`
+    *   [x] Create an initial commit with project files.
+    *   [x] Create a repository on GitHub (or preferred platform) and push the initial commit.
+*   [x] **Initialize Next.js Project:**
+    *   [x] Open your terminal.
+    *   [x] Run the Next.js create command:
         ```bash
         pnpm create next-app agri-value-connect --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
         ```
-    *   [ ] `cd agri-value-connect`
-*   [ ] **Supabase Project Setup:**
-    *   [ ] Go to [supabase.com](https://supabase.com) and create a new project.
-    *   [ ] Note down your Project URL and `anon` key (and `service_role` key, securely).
-*   [ ] **Install Core Dependencies:**
-    *   [ ] Supabase client & Auth Helpers:
+    *   [x] `cd agri-value-connect`
+*   [x] **Supabase Project Setup:**
+    *   [x] Go to [supabase.com](https://supabase.com) and create a new project.
+    *   [x] Note down your Project URL and `anon` key (and `service_role` key, securely).
+*   [x] **Install Core Dependencies:**
+    *   [x] Supabase client & Auth Helpers:
         ```bash
         pnpm add @supabase/supabase-js @supabase/auth-helpers-nextjs @supabase/ssr
         ```
-    *   [ ] UI & Utilities:
+    *   [x] UI & Utilities:
         ```bash
         pnpm add date-fns react-hook-form lucide-react
         ```
-    *   [ ] Mapping (if implementing):
+    *   [x] Mapping (if implementing):
         ```bash
         pnpm add react-leaflet leaflet
         pnpm add -D @types/leaflet
         ```
-*   [ ] **Initialize `shadcn`:**
-    *   [ ] Follow the `shadcn` installation guide for Next.js:
+*   [x] **Initialize `shadcn/ui`:**
+    *   [x] Follow the `shadcn/ui` installation guide for Next.js:
         ```bash
-        pnpm dlx shadcn@latest init
+        pnpm dlx shadcn-ui@latest init
         ```
-    *   [ ] Configure `tailwind.config.js` and `globals.css` as per `shadcn/ui` instructions.
-*   [ ] **Environment Variables:**
-    *   [ ] Create a `.env.local` file in your project root.
-    *   [ ] Add your Supabase Project URL and `anon` key.
-    *   [ ] Ensure `.env.local` is in `.gitignore`.
-*   [ ] **Supabase Client Helpers:**
-    *   [ ] Create utility files for initializing Supabase client.
+    *   [x] Configure `tailwind.config.js` and `globals.css` as per `shadcn/ui` instructions.
+*   [x] **Environment Variables:**
+    *   [x] Create a `.env.local` file in your project root.
+    *   [x] Add your Supabase Project URL and `anon` key.
+    *   [x] Ensure `.env.local` is in `.gitignore`.
+*   [x] **Supabase Client Helpers:**
+    *   [x] Create utility files for initializing Supabase client.
 *   **Testing & Verification (Phase 1):**
-    *   [ ] Verify Next.js app runs locally (`pnpm dev`).
-    *   [ ] Confirm Supabase connection can be established (e.g., a simple test query).
-    *   [ ] Check that `shadcn/ui` components can be imported and rendered without errors.
-    *   [ ] Commit changes: `git add . && git commit -m "Phase 1: Project Setup & Initialization Complete"`
+    *   [x] Verify Next.js app runs locally (`pnpm dev`).
+    *   [x] Confirm Supabase connection can be established (e.g., a simple test query).
+    *   [x] Check that `shadcn/ui` components can be imported and rendered without errors.
+    *   [x] Commit changes: `git add . && git commit -m "Phase 1: Project Setup & Initialization Complete"`
 
 ---
 
 **Phase 2: Database Schema Design & Supabase Setup**
 
-*   [ ] **Define Database Tables:**
-    *   [ ] `profiles` table defined.
-    *   [ ] `products` (Listings) table defined.
-    *   [ ] `chats` table defined.
-    *   [ ] `messages` table defined.
-*   [ ] **Implement Schema in Supabase:**
-    *   [ ] Tables created in Supabase Table Editor or via SQL.
-    *   [ ] Relationships, data types, and defaults configured.
-*   [ ] **Row Level Security (RLS):**
-    *   [ ] RLS enabled for all tables.
-    *   [ ] Policies for `profiles` implemented.
-    *   [ ] Policies for `products` implemented.
-    *   [ ] Policies for `chats` implemented.
-    *   [ ] Policies for `messages` implemented.
-*   [ ] **Supabase Storage:**
-    *   [ ] Public bucket for product images created.
-    *   [ ] Storage policies configured.
-*   [ ] **Database Functions/Triggers:**
-    *   [ ] (Recommended) Function to create `profile` on `auth.users` insert implemented and tested.
-    *   [ ] (Optional) Trigger for `updated_at` timestamps.
+*   [x] **Define Database Tables:**
+    *   [x] `profiles` table defined.
+    *   [x] `products` (Listings) table defined.
+    *   [x] `chats` table defined.
+    *   [x] `messages` table defined.
+*   [x] **Implement Schema in Supabase:**
+    *   [x] Tables created in Supabase Table Editor or via SQL.
+    *   [x] Relationships, data types, and defaults configured.
+*   [x] **Row Level Security (RLS):**
+    *   [x] RLS enabled for all tables.
+    *   [x] Policies for `profiles` implemented.
+    *   [x] Policies for `products` implemented.
+    *   [x] Policies for `chats` implemented.
+    *   [x] Policies for `messages` implemented.
+*   [x] **Supabase Storage:**
+    *   [x] Public bucket for product images created. (bucket_id = 'product-images')
+    *   [x] Storage policies configured.
+*   [x] **Database Functions/Triggers:**
+    *   [x] (Recommended) Function to create `profile` on `auth.users` insert implemented and tested.
+    *   [ ] (Optional) Trigger for `updated_at` timestamps. (Skipped for MVP)
 *   **Testing & Verification (Phase 2):**
-    *   [ ] Manually add sample data to tables via Supabase Studio.
-    *   [ ] Test RLS policies by querying data as different test users (using Supabase SQL Editor's role impersonation or client-side tests).
-    *   [ ] Verify image uploads to Supabase Storage bucket work as expected.
-    *   [ ] Confirm the `profile` creation trigger/function works when a new user is added to `auth.users`.
+    *   [x] Manually add sample data to tables via Supabase Studio.
+    *   [x] Test RLS policies by querying data as different test users (using Supabase SQL Editor's role impersonation or client-side tests).
+    *   [ ] Verify image uploads to Supabase Storage bucket work as expected. (Deferred to Phase 4)
+    *   [x] Confirm the `profile` creation trigger/function works when a new user is added to `auth.users`.
     *   [ ] Commit changes: `git add . && git commit -m "Phase 2: Database Schema & Supabase Setup Complete"`
 
 ---
