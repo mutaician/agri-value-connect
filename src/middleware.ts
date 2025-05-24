@@ -1,6 +1,11 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
 
+// Define paths that require authentication
+const protectedPaths = ['/dashboard', '/profile', '/my-listings', '/products/new']; // Add any other paths that need protection
+// Define paths that should redirect if logged in (already handled by page-level checks, but can be listed here for clarity or if needed)
+// const authRoutes = ['/login', '/signup'];
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -17,38 +22,12 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
+          // Ensure cookies are set on the response, not the request
+          response.cookies.set({ name, value, ...options });
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+          // Ensure cookies are set on the response, not the request
+          response.cookies.set({ name, value: '', ...options });
         },
       },
     }
@@ -56,9 +35,21 @@ export async function middleware(request: NextRequest) {
 
   // Refresh session if expired - required for Server Components
   // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
-  await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser();
 
-  return response
+  const { pathname } = request.nextUrl;
+
+  // If user is not logged in and trying to access a protected path, redirect to login
+  if (!user && protectedPaths.some(path => pathname.startsWith(path))) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // If user is logged in and trying to access login/signup, redirect to home (already handled by page server components, but good for defense-in-depth)
+  // if (user && authRoutes.some(path => pathname.startsWith(path))) {
+  //   return NextResponse.redirect(new URL('/', request.url));
+  // }
+
+  return response;
 }
 
 export const config = {

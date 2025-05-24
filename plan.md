@@ -84,33 +84,33 @@
     *   [x] Test RLS policies by querying data as different test users (using Supabase SQL Editor's role impersonation or client-side tests).
     *   [ ] Verify image uploads to Supabase Storage bucket work as expected. (Deferred to Phase 4)
     *   [x] Confirm the `profile` creation trigger/function works when a new user is added to `auth.users`.
-    *   [ ] Commit changes: `git add . && git commit -m "Phase 2: Database Schema & Supabase Setup Complete"`
+    *   [x] Commit changes: `git add . && git commit -m "Phase 2: Database Schema & Supabase Setup Complete"`
 
 ---
 
 **Phase 3: Authentication**
 
-*   [ ] **Integrate Supabase Auth:**
-    *   [ ] Utilize `@supabase/auth-helpers-nextjs` and `@supabase/ssr` for session management.
-*   [ ] **Auth UI:**
-    *   [ ] Login form created using `shadcn/ui`.
-    *   [ ] Signup form created using `shadcn/ui`.
-    *   [ ] (Optional) Consider Supabase UI's `Password-Based Auth` block.
-*   [ ] **Auth Logic:**
-    *   [ ] `signUp` function implemented and working.
-    *   [ ] `signInWithPassword` function implemented and working.
-    *   [ ] `signOut` function implemented and working.
-    *   [ ] User sessions handled correctly (persisted, cleared on logout).
-    *   [ ] Redirects based on auth state implemented.
-*   [ ] **Protected Routes/Layouts:**
-    *   [ ] Middleware or layout checks for protecting routes implemented.
+*   [x] **Integrate Supabase Auth:**
+    *   [x] Utilize `@supabase/auth-helpers-nextjs` and `@supabase/ssr` for session management.
+*   [x] **Auth UI:**
+    *   [x] Login form created using `shadcn/ui`.
+    *   [x] Signup form created using `shadcn/ui`.
+    *   [ ] (Optional) Consider Supabase UI's `Password-Based Auth` block. (Skipped for MVP)
+*   [x] **Auth Logic:**
+    *   [x] `signUp` function implemented and working.
+    *   [x] `signInWithPassword` function implemented and working.
+    *   [x] `signOut` function implemented and working.
+    *   [x] User sessions handled correctly (persisted, cleared on logout).
+    *   [x] Redirects based on auth state implemented.
+*   [x] **Protected Routes/Layouts:**
+    *   [x] Middleware or layout checks for protecting routes implemented.
 *   **Testing & Verification (Phase 3):**
-    *   [ ] Test user registration: new user can sign up, `auth.users` entry created, `profiles` entry created.
-    *   [ ] Test user login: existing user can log in.
-    *   [ ] Test user logout: session is cleared.
-    *   [ ] Verify protected routes are inaccessible when logged out and accessible when logged in.
-    *   [ ] Check for appropriate error handling (e.g., incorrect password, user already exists).
-    *   [ ] Commit changes: `git add . && git commit -m "Phase 3: Authentication Complete"`
+    *   [x] Test user registration: new user can sign up, `auth.users` entry created, `profiles` entry created.
+    *   [x] Test user login: existing user can log in.
+    *   [x] Test user logout: session is cleared.
+    *   [x] Verify protected routes are inaccessible when logged out and accessible when logged in.
+    *   [x] Check for appropriate error handling (e.g., incorrect password, user already exists).
+    *   [x] Commit changes: `git add . && git commit -m "Phase 3: Authentication Complete"`
 
 ---
 
