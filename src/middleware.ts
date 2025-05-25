@@ -48,15 +48,34 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
+  
+  // Get base URL from request or use environment variable as fallback
+  const getBaseURL = () => {
+    // Try to use the request's origin, if available and valid
+    try {
+      const url = new URL(request.url);
+      return url.origin;
+    } catch {
+      // Fallback to environment variable or default to https://agri-value-connect.vercel.app
+      const envUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://agri-value-connect.vercel.app';
+      return envUrl;
+    }
+  };
+  
+  // Create a safe URL for redirects
+  const createRedirectURL = (path: string) => {
+    const baseUrl = getBaseURL();
+    return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;
+  };
 
   // If user is not logged in and trying to access a protected path, redirect to login
   if (!user && protectedPaths.some(path => pathname.startsWith(path))) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(createRedirectURL('/login'));
   }
 
   // If user is logged in and trying to access login/signup, redirect to home (already handled by page server components, but good for defense-in-depth)
   // if (user && authRoutes.some(path => pathname.startsWith(path))) {
-  //   return NextResponse.redirect(new URL('/', request.url));
+  //   return NextResponse.redirect(createRedirectURL('/'));
   // }
 
   return response;

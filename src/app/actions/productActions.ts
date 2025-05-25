@@ -55,6 +55,18 @@ export async function deleteProduct(productId: string): Promise<{ success: boole
   if (product.image_urls && product.image_urls.length > 0) {
     const imageFileNames = product.image_urls.map((url: string) => { // Added type for url
       try {
+        // Ensure we have a valid URL by checking if it's a fully qualified URL
+        if (!url.startsWith('http')) {
+          // If not a full URL, it might just be the path part
+          const fileNameParts = url.split('/');
+          // Extract just the file path after product-images
+          const productImagesIndex = fileNameParts.indexOf('product-images');
+          return productImagesIndex >= 0 ? 
+            fileNameParts.slice(productImagesIndex + 1).join('/') : 
+            url; // Fallback to the original string if pattern not matched
+        }
+        
+        // For fully qualified URLs, parse them properly
         const pathParts = new URL(url).pathname.split('/');
         // Assuming URL format like .../storage/v1/object/public/product-images/farmer-id/image.jpg
         // We want "farmer-id/image.jpg"
