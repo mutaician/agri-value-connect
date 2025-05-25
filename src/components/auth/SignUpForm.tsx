@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,9 +27,19 @@ const formSchema = z.object({
   username: z.string().min(3, { message: "Username must be at least 3 characters." }),
   fullName: z.string().min(2, { message: "Full name must be at least 2 characters." }).optional(),
   role: z.enum(["farmer", "buyer"], { required_error: "You must select a role." }),
+  buyerType: z.enum(["individual", "vendor", "restaurant"]).optional(),
+  typicalCropsGrownCsv: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don\'t match",
   path: ["confirmPassword"],
+}).refine((data) => {
+  if (data.role === 'buyer' && !data.buyerType) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please select your buyer type.",
+  path: ["buyerType"],
 });
 
 export function SignUpForm() {
@@ -49,22 +59,35 @@ export function SignUpForm() {
       username: "",
       fullName: "",
       role: "buyer",
+      buyerType: undefined,
+      typicalCropsGrownCsv: "",
     },
   });
+
+  const currentRole = useWatch({ control: form.control, name: "role" });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     setError(null);
     try {
+      const optionsData: { [key: string]: any } = {
+        username: values.username,
+        full_name: values.fullName,
+        role: values.role,
+      };
+
+      if (values.role === 'buyer' && values.buyerType) {
+        optionsData.buyer_type = values.buyerType;
+      }
+      if (values.role === 'farmer' && values.typicalCropsGrownCsv) {
+        optionsData.typical_crops_grown_csv = values.typicalCropsGrownCsv;
+      }
+
       const { error: signUpError } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
-          data: { 
-            username: values.username,
-            full_name: values.fullName,
-            role: values.role,
-          },
+          data: optionsData,
         },
       });
 
@@ -192,6 +215,50 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
+
+        {currentRole === 'buyer' && (
+          <FormField
+            control={form.control}
+            name="buyerType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Type of Buyer</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select buyer type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="individual">Individual</SelectItem>
+                    <SelectItem value="vendor">Vendor/Reseller</SelectItem>
+                    <SelectItem value="restaurant">Restaurant/Cafe</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        {currentRole === 'farmer' && (
+          <FormField
+            control={form.control}
+            name="typicalCropsGrownCsv"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Typical Crops Grown (comma-separated)</FormLabel>
+                <FormControl>
+                  <Input placeholder="e.g., Tomatoes, Maize, Beans" {...field} />
+                </FormControl>
+                <FormDescription>
+                  List the crops you usually grow, separated by commas.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         {error && <p className="text-sm font-medium text-destructive">{error}</p>}
         

@@ -116,31 +116,31 @@
 
 **Phase 4: Core Features - Product Listings & Browsing**
 
-*   [ ] **Farmer - Create Listing Page (`/products/new`):**
-    *   [ ] Form built with `React Hook Form` & `shadcn/ui`.
-    *   [ ] Image upload functionality integrated.
-    *   [ ] Data successfully saves to `products` table in Supabase.
-*   [ ] **Buyer - Browse Listings Page (`/products` or `/`):**
-    *   [ ] Active product listings fetched and displayed.
-    *   [ ] Basic search by `crop_type` implemented.
-    *   [ ] Basic sort functionality implemented.
-*   [ ] **Single Product View Page (`/products/[id]`):**
-    *   [ ] Detailed product information displayed.
-    *   [ ] Farmer details (from `profiles`) displayed.
-*   [ ] **Farmer - Manage My Listings Page (`/my-listings`):**
-    *   [ ] Logged-in farmer's listings displayed.
-    *   [ ] Edit functionality implemented (updates product in Supabase).
-    *   [ ] Delete functionality implemented (updates product status or deletes from Supabase).
-*   [ ] **Dynamic Discounting Logic:**
-    *   [ ] Simple date-based discounting logic implemented and visible.
+*   [x] **Farmer - Create Listing Page (`/products/new`):**
+    *   [x] Form built with `React Hook Form` & `shadcn/ui`.
+    *   [x] Image upload functionality integrated.
+    *   [x] Data successfully saves to `products` table in Supabase.
+*   [x] **Buyer - Browse Listings Page (`/products` or `/`):**
+    *   [x] Active product listings fetched and displayed.
+    *   [x] Basic search by `crop_type` implemented.
+    *   [x] Basic sort functionality implemented.
+*   [x] **Single Product View Page (`/products/[id]`):**
+    *   [x] Detailed product information displayed.
+    *   [x] Farmer details (from `profiles`) displayed.
+*   [x] **Farmer - Manage My Listings Page (`/my-listings`):**
+    *   [x] Logged-in farmer's listings displayed.
+    *   [x] Edit functionality implemented (updates product in Supabase).
+    *   [x] Delete functionality implemented (updates product status or deletes from Supabase).
+*   [x] **Dynamic Discounting Logic:**
+    *   [x] Simple date-based discounting logic implemented and visible.
 *   **Testing & Verification (Phase 4):**
-    *   [ ] Farmer can create a new listing with all details and an image.
-    *   [ ] Buyer can see the new listing on the browse page.
-    *   [ ] Search and sort functions work as expected on the browse page.
-    *   [ ] Buyer can view the full details of a product.
-    *   [ ] Farmer can view, edit, and delete their own listings.
-    *   [ ] Dynamic discounting appears correctly for relevant products.
-    *   [ ] Commit changes: `git add . && git commit -m "Phase 4: Product Listings & Browsing Complete"`
+    *   [x] Farmer can create a new listing with all details and an image.
+    *   [x] Buyer can see the new listing on the browse page.
+    *   [x] Search and sort functions work as expected on the browse page.
+    *   [x] Buyer can view the full details of a product.
+    *   [x] Farmer can view, edit, and delete their own listings.
+    *   [x] Dynamic discounting appears correctly for relevant products.
+    *   [x] Commit changes: `git add . && git commit -m "Phase 4: Product Listings & Browsing Complete"`
 
 ---
 
