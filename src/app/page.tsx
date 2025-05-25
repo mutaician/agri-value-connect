@@ -155,14 +155,16 @@ function ProductCard({ product }: { product: Product }) {
 
         {product.profiles && (
           <div className="flex items-center text-xs text-gray-500 pt-3 border-t border-gray-200 mt-auto">
-            <Image
-              src={product.profiles.avatar_url || '/default-avatar.png'} // Fallback avatar
-              alt={product.profiles.full_name || product.profiles.username || 'Farmer'}
-              width={24}
-              height={24}
-              className="rounded-full mr-2"
-            />
-            <span>{product.profiles.full_name || product.profiles.username || 'Farmer'}</span>
+            <Link href={`/profile/${product.farmer_id}`} className="flex items-center hover:underline">
+              <Image
+                src={product.profiles.avatar_url || '/default-avatar.png'} // Fallback avatar
+                alt={product.profiles.full_name || product.profiles.username || 'Farmer'}
+                width={24}
+                height={24}
+                className="rounded-full mr-2"
+              />
+              <span>{product.profiles.full_name || product.profiles.username || 'Farmer'}</span>
+            </Link>
           </div>
         )}
       </div>

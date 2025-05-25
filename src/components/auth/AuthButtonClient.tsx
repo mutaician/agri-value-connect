@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, UserCircle2 } from "lucide-react";
 
 interface AuthButtonClientProps {
   isUserLoggedIn: boolean;
@@ -23,14 +23,19 @@ export function AuthButtonClient({ isUserLoggedIn, userEmail }: AuthButtonClient
 
   if (isUserLoggedIn) {
     return (
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-3">
         <Button asChild variant="ghost" size="sm">
           <Link href="/chats" className="flex items-center">
-            <MessageSquare size={16} className="mr-2" />
-            Chats
+            <MessageSquare size={16} className="mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Chats</span>
           </Link>
         </Button>
-        <span className="text-sm text-gray-700">{userEmail}</span>
+        <Button asChild variant="ghost" size="sm">
+          <Link href="/profile" className="flex items-center">
+            <UserCircle2 size={16} className="mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Profile</span>
+          </Link>
+        </Button>
         <Button onClick={handleSignOut} variant="outline" size="sm">
           Logout
         </Button>
