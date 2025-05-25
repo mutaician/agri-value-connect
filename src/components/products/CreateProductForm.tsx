@@ -250,10 +250,6 @@ export function CreateProductForm({ /* userId, */ productToEdit, isEditMode = fa
       };
 
       if (isEditMode && productToEdit) {
-        console.log("Attempting to update product ID:", productToEdit.id);
-        console.log("Product data for update:", JSON.stringify(productData, null, 2));
-        console.log("Current auth UID from submit handler:", currentAuthUid);
-        console.log("Original farmer_id from productToEdit:", productToEdit.farmer_id);
 
         const { error: updateError } = await supabase
           .from("products")

@@ -1,5 +1,6 @@
 import { LoginForm } from "@/components/auth/LoginForm";
 import Link from "next/link";
+import { Suspense } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from 'next/navigation';
 
@@ -25,7 +26,9 @@ export default async function LoginPage() {
             </Link>
           </p>
         </div>
-        <LoginForm />
+        <Suspense fallback={<div className="h-20 flex items-center justify-center">Loading login form...</div>}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );

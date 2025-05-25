@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from 'lucide-react';
 
 const formSchema = z.object({
@@ -26,6 +26,8 @@ const formSchema = z.object({
 export function LoginForm() {
   const supabase = createSupabaseBrowserClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get('redirect');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +46,7 @@ export function LoginForm() {
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: values.email,
-        password: values.password,
+        password: values.password
       });
 
       if (signInError) {
@@ -58,8 +60,12 @@ export function LoginForm() {
       } else {
         // On successful login, Supabase client automatically handles session.
         // Middleware will help keep session fresh.
-        // Redirect to a dashboard or home page.
-        router.push("/"); // Redirect to home page after login
+        // Redirect to the specified path or home page.
+        if (redirectPath) {
+          router.push(redirectPath); // Redirect to the specified path after login
+        } else {
+          router.push("/"); // Redirect to home page if no redirect path
+        }
         router.refresh(); // Refresh to ensure server components pick up session
       }
     } catch (e) {

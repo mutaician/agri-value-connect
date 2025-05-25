@@ -35,6 +35,16 @@ export async function middleware(request: NextRequest) {
 
   // Refresh session if expired - required for Server Components
   // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  
+  // If session exists but is expired, try to refresh it
+  if (session?.expires_at && session.expires_at * 1000 < Date.now()) {
+    await supabase.auth.refreshSession();
+  }
+  
+  // Get user after potentially refreshing the session
   const { data: { user } } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
