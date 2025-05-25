@@ -79,37 +79,52 @@
 }
 
 .dark {
-  --background: oklch(0.147 0.004 49.25);
-  --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
-  --card-foreground: oklch(0.985 0.001 106.423);
-  --popover: oklch(0.216 0.006 56.043);
-  --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.923 0.003 48.717);
-  --primary-foreground: oklch(0.216 0.006 56.043);
-  --secondary: oklch(0.268 0.007 34.298);
-  --secondary-foreground: oklch(0.985 0.001 106.423);
-  --muted: oklch(0.268 0.007 34.298);
-  --muted-foreground: oklch(0.709 0.01 56.259);
-  --accent: oklch(0.268 0.007 34.298);
-  --accent-foreground: oklch(0.985 0.001 106.423);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.553 0.013 58.071);
+  /* Darker, desaturated green-ish theme */
+  --background: oklch(0.26 0.015 150); /* Main background: Lighter, subtle green */
+  --foreground: oklch(0.96 0.005 150); /* Foreground text: Off-white with a hint of green */
+
+  --card: oklch(0.30 0.018 150); /* Card background: Slightly lighter than main, subtle green */
+  --card-foreground: oklch(0.96 0.005 150);
+
+  --popover: oklch(0.30 0.018 150); /* Popover background */
+  --popover-foreground: oklch(0.96 0.005 150);
+
+  /* Primary colors can remain as they are if they provide good contrast for actions */
+  /* Or adjust if needed. Current dark primary is a light, warm color. */
+  --primary: oklch(0.85 0.05 130); /* Example: A lighter, slightly desaturated green for primary actions */
+  --primary-foreground: oklch(0.15 0.01 130); /* Darker text for the new primary */
+  
+  --secondary: oklch(0.32 0.015 150); /* Secondary elements */
+  --secondary-foreground: oklch(0.94 0.005 150);
+
+  --muted: oklch(0.32 0.015 150); /* Muted elements */
+  --muted-foreground: oklch(0.85 0.01 150); /* Muted text, lighter for better legibility */
+
+  --accent: oklch(0.32 0.015 150); /* Accent elements */
+  --accent-foreground: oklch(0.94 0.005 150);
+
+  --destructive: oklch(0.704 0.191 22.216); /* Destructive actions - often red, keep as is or adjust hue if needed */
+
+  --border: oklch(0.38 0.015 150 / 30%); /* Borders: Lighter, subtle green */
+  --input: oklch(0.38 0.015 150 / 35%); /* Input backgrounds: Lighter, subtle green */
+  --ring: oklch(0.65 0.06 130); /* Ring color to complement new primary */
+
+  /* Chart colors might need adjustment if they clash with the new theme */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.216 0.006 56.043);
-  --sidebar-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-accent: oklch(0.268 0.007 34.298);
-  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.553 0.013 58.071);
+
+  /* Sidebar colors - assuming similar adjustments as main/card if sidebar is used */
+  --sidebar: oklch(0.30 0.018 150);
+  --sidebar-foreground: oklch(0.96 0.005 150);
+  --sidebar-primary: oklch(0.85 0.05 130); 
+  --sidebar-primary-foreground: oklch(0.15 0.01 130);
+  --sidebar-accent: oklch(0.32 0.015 150);
+  --sidebar-accent-foreground: oklch(0.94 0.005 150);
+  --sidebar-border: oklch(0.38 0.015 150 / 25%);
+  --sidebar-ring: oklch(0.65 0.06 130);
 }
 
 @layer base {

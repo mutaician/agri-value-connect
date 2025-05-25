@@ -190,7 +190,7 @@ export default async function HomePage({
 
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-3xl sm:text-4xl font-bold text-center text-green-800 mb-6 sm:mb-10">
+      <h1 className="text-6xl sm:text-4xl font-bold text-center text-green-800 mb-6 sm:mb-10 dark:text-green-400">
         Fresh Produce Marketplace
       </h1>
 

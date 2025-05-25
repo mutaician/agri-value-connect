@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AuthButtonClient } from "@/components/auth/AuthButtonClient";
 import { Button } from "@/components/ui/button";
 import { List, PlusCircle } from "lucide-react";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export async function Header() {
   const supabase = await createSupabaseServerClient();
@@ -22,8 +23,8 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex items-center h-16 max-w-screen-2xl">
-        <Link href="/" className="mr-auto font-bold text-lg text-green-700 hover:text-green-800">
+      <div className="container flex items-center h-16 max-w-screen-2xl px-6">
+        <Link href="/" className="mr-auto font-bold text-lg text-green-700 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
           AgriValue Connect
         </Link>
         
@@ -55,6 +56,9 @@ export async function Header() {
             userEmail={user?.email}
           />
         </div>
+        {/* <ThemeToggle /> */}
+         {/* TODO: Add theme toggle back in after setting them for all other website pages */}
+
       </div>
     </header>
   );

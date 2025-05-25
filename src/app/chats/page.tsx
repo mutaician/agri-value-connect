@@ -99,7 +99,7 @@ export default async function ChatsPage() {
   return (
     <div className="container mx-auto max-w-3xl py-8 px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Your Chats</h1>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">Your Chats</h1>
         {/* Optional: Link to start new chat or browse products if needed */}
       </div>
 
