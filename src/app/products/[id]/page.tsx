@@ -3,8 +3,9 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Product } from '@/app/page'; // Assuming Product interface is in src/app/page.tsx
 import { format, parseISO } from 'date-fns';
-import { MapPin, CalendarDays, Tag, ShoppingCart, UserCircle, Building, Percent } from 'lucide-react';
+import { MapPin, CalendarDays, Tag, ShoppingCart, UserCircle, Building, Percent, MessageSquare } from 'lucide-react';
 import { calculateDiscountedPrice, DiscountDetails } from "@/lib/utils"; // Added import
+import { ContactFarmerButton } from "@/components/chat/ContactFarmerButton"; // Import the new button
 
 // It might be better to move the Product interface to a dedicated types file (e.g., @/types/index.ts)
 // For now, we'll re-use or re-declare if necessary.
@@ -47,6 +48,10 @@ export default async function ProductPage({ params: receivedParams }: { params: 
   // As per Next.js docs, await the params prop in Server Components
   const params = await receivedParams;
   
+  const supabase = await createSupabaseServerClient(); // Removed cookies() argument
+  
+  const { data: { user: currentUser } } = await supabase.auth.getUser();
+
   const product = await getProductById(params.id);
 
   if (!product) {
@@ -159,12 +164,21 @@ export default async function ProductPage({ params: receivedParams }: { params: 
                     {/* Could add more farmer details here if available/relevant */}
                   </div>
                 </div>
-                {/* Placeholder for "Contact Farmer" button - Phase 5 */}
-                <div className="mt-4">
-                    <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-150 ease-in-out">
-                        Contact Farmer (Coming Soon)
-                    </button>
-                </div>
+                
+                {currentUser && product.farmer_id !== currentUser.id && (
+                  <div className="mt-4">
+                    <ContactFarmerButton 
+                      productId={product.id} 
+                      farmerId={product.farmer_id} 
+                      currentUserId={currentUser.id} 
+                    />
+                  </div>
+                )}
+                 {currentUser && product.farmer_id === currentUser.id && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-center">
+                      <p className="text-sm text-blue-700">This is your product listing.</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
