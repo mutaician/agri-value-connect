@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Edit3, Trash2, AlertTriangle, Percent } from "lucide-react";
+import { PlusCircle, Edit3, AlertTriangle } from "lucide-react";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { DeleteProductButton } from "@/components/products/DeleteProductButton";
 import { calculateDiscountedPrice, DiscountDetails } from "@/lib/utils";
@@ -135,7 +135,7 @@ export default async function MyListingsPage() {
         <div className="text-center py-10 px-6 bg-white rounded-lg shadow-md">
           <AlertTriangle className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
           <h2 className="text-2xl font-semibold text-gray-700 mb-2">No Listings Yet!</h2>
-          <p className="text-gray-500 mb-6">You haven't added any products to the marketplace. Click the button above to get started.</p>
+          <p className="text-gray-500 mb-6">You haven&apos;t added any products to the marketplace. Click the button above to get started.</p>
         </div>
       ) : (
         <div className="space-y-6">

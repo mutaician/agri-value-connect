@@ -62,8 +62,12 @@ export function LoginForm() {
         router.push("/"); // Redirect to home page after login
         router.refresh(); // Refresh to ensure server components pick up session
       }
-    } catch (e: any) {
-      setError("An unexpected error occurred: " + e.message);
+    } catch (e) {
+      if (e instanceof Error) {
+        setError("An unexpected error occurred: " + e.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }

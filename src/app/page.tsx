@@ -1,8 +1,9 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { Tag, MapPin, CalendarDays, Percent } from 'lucide-react';
+import { Tag, MapPin, CalendarDays } from 'lucide-react';
 import SearchAndSortControls from '@/components/products/SearchAndSortControls';
 import { calculateDiscountedPrice, DiscountDetails } from "@/lib/utils";
 
@@ -172,20 +173,24 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
+// Use explicit Promise typing as suggested
 export default async function HomePage({ 
-  searchParams: receivedSearchParams // Renamed prop for clarity before awaiting
+  // Keeping params in type definition but not in destructuring to avoid ESLint warnings
+  searchParams 
 }: { 
-  searchParams: { [key: string]: string | string[] | undefined }; // Type of the prop itself
+  params: Promise<Record<string, string>>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  // As per Next.js docs, await the searchParams prop in Server Components
-  const searchParams = await receivedSearchParams;
-
-  const searchParamValue = searchParams.search;
+  // Await the Promise to get the actual values
+  const resolvedSearchParams = await searchParams;
+  
+  const searchParamValue = resolvedSearchParams?.search;
   const searchTerm = typeof searchParamValue === 'string' ? searchParamValue : undefined;
 
-  const sortByParamValue = searchParams.sortBy;
+  const sortByParamValue = resolvedSearchParams?.sortBy;
   const sortBy = typeof sortByParamValue === 'string' ? sortByParamValue : undefined;
 
+  // Since this is a Server Component, we can use async/await directly 
   const products = await getProducts(searchTerm, sortBy);
 
   return (
@@ -194,7 +199,19 @@ export default async function HomePage({
         Fresh Produce Marketplace
       </h1>
 
-      <SearchAndSortControls />
+      <Suspense fallback={
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="relative flex-grow sm:max-w-xs lg:max-w-sm">
+            <div className="h-10 w-full bg-gray-100 rounded-md animate-pulse"></div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Sort by:</span>
+            <div className="h-10 w-[200px] bg-gray-100 rounded-md animate-pulse"></div>
+          </div>
+        </div>
+      }>
+        <SearchAndSortControls />
+      </Suspense>
 
       {products.length === 0 && (
         <p className="text-center text-gray-600 text-lg mt-6">
@@ -203,7 +220,7 @@ export default async function HomePage({
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mt-6">
-        {products.map((product) => (
+        {products.map((product: Product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

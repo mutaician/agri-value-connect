@@ -42,6 +42,15 @@ const formSchema = z.object({
   path: ["buyerType"],
 });
 
+// Define a type for the data passed in supabase.auth.signUp options
+interface SignUpOptionsData {
+  username: string;
+  full_name?: string | null; // Match optional nature and potential null from form
+  role: "farmer" | "buyer";
+  buyer_type?: "individual" | "vendor" | "restaurant" | null;
+  typical_crops_grown_csv?: string | null;
+}
+
 export function SignUpForm() {
   const supabase = createSupabaseBrowserClient();
   const router = useRouter();
@@ -70,18 +79,31 @@ export function SignUpForm() {
     setLoading(true);
     setError(null);
     try {
-      const optionsData: { [key: string]: any } = {
+      const optionsData: SignUpOptionsData = {
         username: values.username,
-        full_name: values.fullName,
+        full_name: values.fullName || null, // Ensure null if empty optional string
         role: values.role,
       };
 
       if (values.role === 'buyer' && values.buyerType) {
         optionsData.buyer_type = values.buyerType;
+      } else if (values.role === 'buyer') {
+        optionsData.buyer_type = null; // Explicitly null if buyer and no type selected
       }
+
       if (values.role === 'farmer' && values.typicalCropsGrownCsv) {
         optionsData.typical_crops_grown_csv = values.typicalCropsGrownCsv;
+      } else if (values.role === 'farmer') {
+        optionsData.typical_crops_grown_csv = null; // Explicitly null if farmer and no CSV
       }
+
+      // Remove null/undefined properties to keep options clean if Supabase prefers that
+      Object.keys(optionsData).forEach(key => {
+        const k = key as keyof SignUpOptionsData;
+        if (optionsData[k] === undefined || optionsData[k] === '') { // also check for empty string for optional text fields
+          delete optionsData[k];
+        }
+      });
 
       const { error: signUpError } = await supabase.auth.signUp({
         email: values.email,
@@ -97,8 +119,12 @@ export function SignUpForm() {
         alert("Signup successful! Please check your email to confirm your account.");
         router.push("/login");
       }
-    } catch (e: any) {
-      setError("An unexpected error occurred: " + e.message);
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError("An unexpected error occurred during sign up.");
+      }
     } finally {
       setLoading(false);
     }

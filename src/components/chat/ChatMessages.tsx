@@ -65,7 +65,7 @@ export default function ChatMessages({ initialMessages, chatId, currentUserId, o
               return prevMessages;
             }
             
-            let messageToAdd = { ...newMessage }; 
+            const messageToAdd = { ...newMessage };
 
             if (messageToAdd.sender_id === currentUserId && (!messageToAdd.profiles || messageToAdd.profiles === null)) {
               messageToAdd.profiles = { id: currentUserId, username: "You", full_name: "You", avatar_url: null };

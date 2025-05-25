@@ -33,7 +33,7 @@ export default async function NewProductPage() {
   return (
     <div className="container mx-auto max-w-2xl py-12 px-4">
       <h1 className="text-3xl font-bold mb-8 text-center text-green-700">List New Produce</h1>
-      <CreateProductForm userId={user.id} />
+      <CreateProductForm />
     </div>
   );
 } 

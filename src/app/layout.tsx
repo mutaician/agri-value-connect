@@ -1,21 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { DisplayMessage } from "@/components/layout/DisplayMessage";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { cn } from "@/lib/utils";
 import { Inter } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Toaster as Sonner } from "@/components/ui/sonner"
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -44,10 +35,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <DisplayMessage />
+          <Suspense fallback={null}>
+            <DisplayMessage />
+          </Suspense>
           <main className="pt-14">
             {children}
           </main>
+          <Sonner />
         </ThemeProvider>
       </body>
     </html>

@@ -1,7 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { UserCircle2, MapPin, Briefcase, Edit3 } from "lucide-react";
+import { MapPin, Briefcase } from "lucide-react";
 // We will create EditProfileForm next
 import EditProfileForm from "@/components/profile/EditProfileForm"; 
 

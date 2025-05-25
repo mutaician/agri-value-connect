@@ -19,10 +19,19 @@ const updateProfileSchema = z.object({
 
 export type UpdateProfileData = z.infer<typeof updateProfileSchema>;
 
+// Define a more specific type for a profile
+export interface ProfileType extends UpdateProfileData {
+  id: string; // Assuming 'id' is always present for a profile
+  role?: 'farmer' | 'buyer' | string; // Role might be present
+  created_at?: string;
+  updated_at?: string;
+  typical_crops_grown?: string[]; // This is the array form
+}
+
 interface UpdateProfileResult {
   success: boolean;
   error?: string;
-  updatedProfile?: any; // Consider defining a proper type if needed
+  updatedProfile?: ProfileType; 
 }
 
 export async function updateProfile(
@@ -40,7 +49,8 @@ export async function updateProfile(
 
   const { typical_crops_grown_csv, ...restOfData } = parsedData.data;
   
-  let profileUpdateData: Partial<typeof restOfData & { typical_crops_grown?: string[], bio?: string|null }> = { ...restOfData };
+  const profileUpdateData: Partial<Omit<ProfileType, 'id' | 'created_at' | 'updated_at' | 'typical_crops_grown_csv'>> & { typical_crops_grown?: string[] } = { ...restOfData };
+
 
   // Convert CSV string for typical_crops_grown to a string array if provided
   if (typeof typical_crops_grown_csv === 'string' && typical_crops_grown_csv.trim() !== "") {
@@ -64,7 +74,7 @@ export async function updateProfile(
   
   const { data: updatedProfile, error } = await supabase
     .from("profiles")
-    .update(profileUpdateData)
+    .update(profileUpdateData as Partial<ProfileType>)
     .eq("id", userId)
     .select()
     .single();
@@ -78,5 +88,5 @@ export async function updateProfile(
   revalidatePath("/"); // Revalidate home if profile info is shown there
   // Potentially revalidate other paths where profile info (like name/avatar) might be displayed, e.g., /products/[id]
 
-  return { success: true, updatedProfile };
+  return { success: true, updatedProfile: updatedProfile as ProfileType };
 } 

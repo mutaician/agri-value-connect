@@ -75,14 +75,14 @@ const productFormSchema = z.object({
 });
 
 interface CreateProductFormProps {
-  userId: string;
+  // userId: string; // Removed as current user is fetched in onSubmit
   productToEdit?: Product | null;
   isEditMode?: boolean;
 }
 
 type ProductFormValues = z.infer<typeof productFormSchema>;
 
-export function CreateProductForm({ userId, productToEdit, isEditMode = false }: CreateProductFormProps) {
+export function CreateProductForm({ /* userId, */ productToEdit, isEditMode = false }: CreateProductFormProps) {
   const supabase = createSupabaseBrowserClient();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -111,7 +111,6 @@ export function CreateProductForm({ userId, productToEdit, isEditMode = false }:
   useEffect(() => {
     if (isEditMode && productToEdit) {
       // Correctly access the base ZodObject's shape after multiple .refine calls
-      // @ts-ignore // Accessing internal Zod properties
       const quantityUnitEnumSchema = productFormSchema._def.schema._def.schema.shape.quantity_unit;
       const validQuantityUnits = quantityUnitEnumSchema._def.values as string[];
       
@@ -163,7 +162,7 @@ export function CreateProductForm({ userId, productToEdit, isEditMode = false }:
       setCurrentImageUrl(null);
       setFileName(null);
     }
-  }, [isEditMode, productToEdit, form.reset]);
+  }, [isEditMode, productToEdit, form.reset, form]);
 
   const onSubmit: SubmitHandler<ProductFormValues> = async (values) => {
     setLoading(true);
@@ -191,10 +190,9 @@ export function CreateProductForm({ userId, productToEdit, isEditMode = false }:
       if (values.product_image) {
         const file = values.product_image;
         const fileExtension = file.name.split('.').pop();
-        // Ensure uploadedFileName uses the definitive currentAuthUid
         uploadedFileName = `${currentAuthUid}/${Date.now()}.${fileExtension}`;
         
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from("product-images")
           .upload(uploadedFileName, file, {
             cacheControl: '3600',
@@ -287,9 +285,13 @@ export function CreateProductForm({ userId, productToEdit, isEditMode = false }:
           router.refresh();
         }
       }
-    } catch (e: any) {
+    } catch (e) {
       console.error("Form submission error:", e);
-      setError("An unexpected error occurred: " + e.message);
+      if (e instanceof Error) {
+        setError("An unexpected error occurred: " + e.message);
+      } else {
+        setError("An unexpected error occurred. Please check console for details.");
+      }
     } finally {
       setLoading(false);
     }
@@ -424,7 +426,7 @@ export function CreateProductForm({ userId, productToEdit, isEditMode = false }:
         <FormField
           control={form.control}
           name="product_image"
-          render={({ field: { onChange, value, ...rest } }) => (
+          render={({ field: { onChange } }) => (
             <FormItem>
               <FormLabel>{isEditMode ? "Change Product Image (Optional)" : "Product Image"}</FormLabel>
               <FormControl>
@@ -442,18 +444,19 @@ export function CreateProductForm({ userId, productToEdit, isEditMode = false }:
                     type="file"
                     className="hidden"
                     accept={ACCEPTED_IMAGE_TYPES.join(",")}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      if (event.target.files && event.target.files[0]) {
+                        const file = event.target.files[0];
                         onChange(file);
                         setFileName(file.name);
-                        if (isEditMode) setCurrentImageUrl(null);
+                        setCurrentImageUrl(URL.createObjectURL(file));
                       } else {
                         onChange(undefined);
                         setFileName(null);
+                        setCurrentImageUrl(null);
                       }
                     }}
-                    {...rest}
+                    // Don't spread restFields to avoid value being passed to file input
                   />
                   <div className="text-center">
                     <UploadCloud className="w-12 h-12 mx-auto mb-3 text-gray-400" />
@@ -623,4 +626,4 @@ export function CreateProductForm({ userId, productToEdit, isEditMode = false }:
       </form>
     </Form>
   );
-} 
+}

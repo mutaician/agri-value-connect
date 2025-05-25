@@ -1,9 +1,8 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { AuthButtonClient } from "@/components/auth/AuthButtonClient";
-import { Button } from "@/components/ui/button";
 import { List, PlusCircle } from "lucide-react";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
+// import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export async function Header() {
   const supabase = await createSupabaseServerClient();
@@ -53,7 +52,6 @@ export async function Header() {
         <div className="flex items-center justify-end flex-shrink-0 ml-auto">
           <AuthButtonClient 
             isUserLoggedIn={!!user}
-            userEmail={user?.email}
           />
         </div>
         {/* <ThemeToggle /> */}

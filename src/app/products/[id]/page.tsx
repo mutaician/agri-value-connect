@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Product } from '@/app/page'; // Assuming Product interface is in src/app/page.tsx
 import { format, parseISO } from 'date-fns';
-import { MapPin, CalendarDays, Tag, ShoppingCart, UserCircle, Building, Percent, MessageSquare } from 'lucide-react';
+import { MapPin, CalendarDays, Tag, ShoppingCart, UserCircle } from 'lucide-react';
 import { calculateDiscountedPrice, DiscountDetails } from "@/lib/utils"; // Added import
 import { ContactFarmerButton } from "@/components/chat/ContactFarmerButton"; // Import the new button
 
@@ -44,15 +44,19 @@ async function getProductById(id: string): Promise<Product | null> {
   return data as Product;
 }
 
-export default async function ProductPage({ params: receivedParams }: { params: { id: string } }) {
-  // As per Next.js docs, await the params prop in Server Components
-  const params = await receivedParams;
+export default async function ProductPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }>
+}) {
+  // Await the Promise to get the actual values
+  const resolvedParams = await params;
   
   const supabase = await createSupabaseServerClient(); // Removed cookies() argument
   
   const { data: { user: currentUser } } = await supabase.auth.getUser();
 
-  const product = await getProductById(params.id);
+  const product = await getProductById(resolvedParams.id);
 
   if (!product) {
     notFound(); // Triggers the not-found.js page or a default 404

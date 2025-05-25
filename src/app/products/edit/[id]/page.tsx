@@ -20,8 +20,13 @@ async function getProductForEdit(id: string): Promise<Product | null> {
   return data as Product;
 }
 
-export default async function EditProductPage({ params: receivedParams }: { params: { id: string } }) {
-  const params = await receivedParams; // Await params as per Next.js dynamic API guidance
+export default async function EditProductPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }>
+}) {
+  // Await the Promise to get the actual values
+  const resolvedParams = await params;
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -29,7 +34,7 @@ export default async function EditProductPage({ params: receivedParams }: { para
     redirect("/login?message=You need to be logged in to edit products.");
   }
 
-  const product = await getProductForEdit(params.id);
+  const product = await getProductForEdit(resolvedParams.id);
 
   if (!product) {
     notFound(); // Product with this ID doesn't exist
@@ -57,7 +62,6 @@ export default async function EditProductPage({ params: receivedParams }: { para
         Edit Product Listing
       </h1>
       <CreateProductForm 
-        userId={user.id} 
         productToEdit={product} 
         isEditMode={true} 
       />

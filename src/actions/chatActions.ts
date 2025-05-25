@@ -3,10 +3,21 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
+// Define a more specific type for a message
+export interface MessageType {
+  id: string;
+  chat_id: string;
+  sender_id: string;
+  content: string;
+  created_at: string; // Assuming ISO string format
+  // Add other fields like profiles if they are part of the message object structure
+  // profiles?: { username: string; avatar_url?: string | null } | null;
+}
+
 interface SendMessageResult {
   success: boolean;
   error?: string;
-  message?: any; // Type this properly based on your Message type if needed
+  message?: MessageType; 
 }
 
 export async function sendMessage(

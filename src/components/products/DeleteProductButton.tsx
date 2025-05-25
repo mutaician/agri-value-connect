@@ -51,7 +51,7 @@ export function DeleteProductButton({ productId, productTitle }: DeleteProductBu
           <AlertDialogDescription>
             Product: <strong>{productTitle}</strong>
             <br />
-            This action will mark the product as 'delisted' and remove it from public view. Associated images will also be deleted. This action cannot be easily undone.
+            This action will mark the product as &apos;delisted&apos; and remove it from public view. Associated images will also be deleted. This action cannot be easily undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

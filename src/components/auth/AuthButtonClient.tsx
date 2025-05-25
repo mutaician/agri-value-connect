@@ -8,10 +8,9 @@ import { MessageSquare, UserCircle2 } from "lucide-react";
 
 interface AuthButtonClientProps {
   isUserLoggedIn: boolean;
-  userEmail?: string | null;
 }
 
-export function AuthButtonClient({ isUserLoggedIn, userEmail }: AuthButtonClientProps) {
+export function AuthButtonClient({ isUserLoggedIn }: AuthButtonClientProps) {
   const supabase = createSupabaseBrowserClient();
   const router = useRouter();
 

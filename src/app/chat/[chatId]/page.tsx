@@ -112,7 +112,7 @@ async function getChatDetails(chatId: string, currentUserId: string): Promise<Ch
   };
 }
 
-export default async function ChatPage({ params }: { params: { chatId: string } }) {
+export default async function ChatPage({ params }: { params: Promise<{ chatId: string }> }) {
   const supabaseForUser = await createSupabaseServerClient();
   const { data: { user: currentUser }, error: authError } = await supabaseForUser.auth.getUser();
 
@@ -185,8 +185,7 @@ export default async function ChatPage({ params }: { params: { chatId: string } 
       <div className="bg-white p-3 sm:p-4 border-t">
         <div className="container mx-auto max-w-4xl">
           <ChatMessageInput 
-            chatId={chatDetails.id} 
-            currentUserId={currentUser.id} 
+            chatId={chatDetails.id}
           />
         </div>
       </div>

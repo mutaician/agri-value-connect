@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { MessageSquare } from "lucide-react";
@@ -35,9 +35,13 @@ export function ContactFarmerButton({ productId, farmerId, currentUserId }: Cont
           // Should not happen if error is null and chatId is null
           toast.error("An unexpected error occurred while trying to start the chat.");
         }
-      } catch (e: any) {
+      } catch (e) {
         console.error("ContactFarmerButton: Error in getOrCreateChat call:", e);
-        toast.error(e.message || "An unexpected error occurred.");
+        if (e instanceof Error) {
+          toast.error(e.message || "An unexpected error occurred.");
+        } else {
+          toast.error("An unexpected error occurred.");
+        }
       }
     });
   };

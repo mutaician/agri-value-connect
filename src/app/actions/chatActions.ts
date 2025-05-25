@@ -5,15 +5,6 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 // import { revalidatePath } from "next/cache";
 // import { redirect } from "next/navigation";
 
-// Interface matching the provided SQL schema (excluding updated_at, last_message_preview for this action's core needs)
-interface Chat {
-  id: string;
-  created_at: string;
-  product_id: string | null; // Can be null based on schema
-  participant_one_id: string;
-  participant_two_id: string;
-}
-
 /**
  * Gets an existing chat between a buyer and a farmer for a specific product,
  * or creates a new one if it doesn't exist.

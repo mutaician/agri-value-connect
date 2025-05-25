@@ -1,7 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { UserCircle2, MapPin, Briefcase } from "lucide-react";
+import { MapPin, Briefcase } from "lucide-react";
 import Link from "next/link";
 
 // Matches the structure of your 'profiles' table + auth email
@@ -38,8 +38,13 @@ async function getPublicUserProfile(userId: string): Promise<PublicUserProfile |
   return profile as PublicUserProfile;
 }
 
-export default async function UserProfilePage({ params }: { params: { userId: string } }) {
-  const { userId } = await params;
+export default async function UserProfilePage({ 
+  params 
+}: { 
+  params: Promise<{ userId: string }>
+}) {
+  const resolvedParams = await params;
+  const { userId } = resolvedParams;
   const profile = await getPublicUserProfile(userId);
 
   if (!profile) {

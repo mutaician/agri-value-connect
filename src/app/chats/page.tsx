@@ -2,7 +2,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { MessageSquare, PackageSearch, UserCircle2 } from "lucide-react";
+import { MessageSquare, PackageSearch } from "lucide-react";
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 interface Profile {
@@ -75,10 +75,20 @@ async function getUserChats(userId: string): Promise<ChatListItem[]> {
         console.error(`Error fetching profile for participant ${otherParticipantId} in chat ${chat.id}:`, profileError);
       }
       
+      // Handle products potentially being an array or single object from the join
+      let productData: ProductInfo | null = null;
+      if (chat.products) {
+        if (Array.isArray(chat.products)) {
+          productData = chat.products[0] as ProductInfo || null;
+        } else {
+          productData = chat.products as ProductInfo || null;
+        }
+      }
+
       return {
         ...chat,
         otherParticipant: profile || null,
-        product: chat.products as ProductInfo || null, // Supabase returns joined table as object
+        product: productData,
       } as ChatListItem;
     })
   );
