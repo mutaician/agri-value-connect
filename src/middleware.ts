@@ -1,16 +1,47 @@
-// import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
 
 // Define paths that require authentication
-// const protectedPaths = ['/dashboard', '/profile', '/my-listings', '/products/new']; // Add any other paths that need protection
-// Define paths that should redirect if logged in (already handled by page-level checks, but can be listed here for clarity or if needed)
-// const authRoutes = ['/login', '/signup'];
+const protectedPaths = ['/dashboard', '/profile', '/my-listings', '/products/new'];
 
 export async function middleware(request: NextRequest) {
-  // Basic middleware - just pass through
   console.log('Middleware running for:', request.nextUrl.pathname);
   
-  return NextResponse.next();
+  const response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          response.cookies.set({ name, value, ...options });
+        },
+        remove(name: string, options: CookieOptions) {
+          response.cookies.set({ name, value: '', ...options });
+        },
+      },
+    }
+  )
+
+  // Get user session
+  const { data: { user } } = await supabase.auth.getUser();
+  const { pathname } = request.nextUrl;
+
+  // If user is not logged in and trying to access a protected path, redirect to login
+  if (!user && protectedPaths.some(path => pathname.startsWith(path))) {
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return response;
 
   /* COMMENTED OUT FOR TESTING - UNCOMMENT AFTER BASIC TEST PASSES
   const response = NextResponse.next({
