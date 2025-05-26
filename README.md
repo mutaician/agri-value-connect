@@ -29,7 +29,7 @@ In Kenya, a significant portion of perishable agricultural produce is lost post-
 
 *   **Frontend:** Next.js (App Router) with TypeScript
 *   **Backend & Database:** Supabase (PostgreSQL, Auth, Realtime Database, Storage)
-*   **UI Components:** shadcn/ui
+*   **UI Components:** shadcn
 *   **Styling:** Tailwind CSS
 *   **Forms:** React Hook Form with Zod for validation
 *   **Date Management:** `date-fns`
@@ -40,15 +40,15 @@ In Kenya, a significant portion of perishable agricultural produce is lost post-
 
 ### Prerequisites
 
-*   Node.js (v18 or later recommended)
-*   pnpm (or npm/yarn)
+*   Node.js (v22 or later recommended)
+*   pnpm 
 *   A Supabase project.
 
 ### Setup
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/agri-value-connect.git
+    git clone https://github.com/mutaician/agri-value-connect.git
     cd agri-value-connect
     ```
 
@@ -65,14 +65,30 @@ In Kenya, a significant portion of perishable agricultural produce is lost post-
         NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
         ```
 
-4.  **Initialize `shadcn/ui` (if needed for further component additions):**
+4.  **Set up Supabase database:**
+    *   Go to your Supabase project dashboard.
+    *   Navigate to the SQL Editor.
+    *   Run all the commands from `ai-assisted/commands.sql` to create the necessary tables, functions, triggers, and Row Level Security (RLS) policies.
+    *   Create a storage bucket named `product-images`:
+        *   Go to Storage in your Supabase dashboard.
+        *   Click "New bucket".
+        *   Name it `product-images` and make it public.
+
+5.  **Configure Next.js for your Supabase project:**
+    *   Update the `hostname` in `next.config.js` to match your Supabase project URL:
+        ```javascript
+        // Replace 'doxlkmrsisnxlvbjojjg.supabase.co' with your actual Supabase project hostname
+        hostname: 'your-project-ref.supabase.co',
+        ```
+
+6.  **Initialize `shadcn` (if needed for further component additions):**
     ```bash
-    pnpm dlx shadcn-ui@latest init
+    pnpm dlx shadcn@latest init
     ```
     (Follow the prompts, ensuring it aligns with the existing setup if you are just adding components.)
 
 
-5.  **Run the development server:**
+7.  **Run the development server:**
     ```bash
     pnpm dev
     ```
@@ -91,4 +107,26 @@ This project is optimized for deployment on [Vercel](https://vercel.com/).
 
 ## Live Demo
 
-[Link to your live Vercel deployment will go here]
+https://agri-value-connect.vercel.app/
+
+## Screenshots in case live demo no longer works
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="ai-assisted/Screenshot_20250526_175209.png" alt="Screenshot 1" width="100%">
+    </td>
+    <td width="50%">
+      <img src="ai-assisted/Screenshot_20250526_175315.png" alt="Screenshot 2" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="ai-assisted/Screenshot_20250526_180803.png" alt="Screenshot 3" width="100%">
+    </td>
+    <td width="50%">
+      <img src="ai-assisted/Screenshot_20250526_180921.png" alt="Screenshot 4" width="100%">
+    </td>
+  </tr>
+</table>
+
