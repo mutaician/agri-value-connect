@@ -1,12 +1,18 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
+// import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
 
 // Define paths that require authentication
-const protectedPaths = ['/dashboard', '/profile', '/my-listings', '/products/new']; // Add any other paths that need protection
+// const protectedPaths = ['/dashboard', '/profile', '/my-listings', '/products/new']; // Add any other paths that need protection
 // Define paths that should redirect if logged in (already handled by page-level checks, but can be listed here for clarity or if needed)
 // const authRoutes = ['/login', '/signup'];
 
 export async function middleware(request: NextRequest) {
+  // Basic middleware - just pass through
+  console.log('Middleware running for:', request.nextUrl.pathname);
+  
+  return NextResponse.next();
+
+  /* COMMENTED OUT FOR TESTING - UNCOMMENT AFTER BASIC TEST PASSES
   const response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -80,6 +86,7 @@ export async function middleware(request: NextRequest) {
   // }
 
   return response;
+  */
 }
 
 export const config = {
