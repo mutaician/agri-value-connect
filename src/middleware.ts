@@ -49,17 +49,18 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   
-  // Get base URL from request or use environment variable as fallback
+  // Get base URL from request headers or use environment variable as fallback
   const getBaseURL = () => {
-    // Try to use the request's origin, if available and valid
-    try {
-      const url = new URL(request.url);
-      return url.origin;
-    } catch {
-      // Fallback to environment variable or default to https://agri-value-connect.vercel.app
-      const envUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://agri-value-connect.vercel.app';
-      return envUrl;
+    // Use the host header to construct the base URL
+    const host = request.headers.get('host');
+    const protocol = request.headers.get('x-forwarded-proto') || 'https';
+    
+    if (host) {
+      return `${protocol}://${host}`;
     }
+    
+    // Fallback to environment variable or default
+    return process.env.NEXT_PUBLIC_BASE_URL || 'https://agri-value-connect.vercel.app';
   };
   
   // Create a safe URL for redirects
